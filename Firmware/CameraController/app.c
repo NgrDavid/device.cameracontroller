@@ -63,6 +63,13 @@ void start_camera0(void)
 		camera0_pulse = true;
 		camera0_sync_sec_counter = -1;
 
+		if (read_CAM0_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
+		{
+			app_regs.REG_SYNC0 = 0;
+			core_func_send_event(ADD_REG_SYNC0, true);
+		}		
+		clr_CAM0_SYNC;
+
 		if (camera_freq < 8)
 		{
 			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV256, (32000000/256)/camera_freq, INT_LEVEL_LOW);
@@ -79,14 +86,16 @@ void start_camera0(void)
 		{
 			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV4, (32000000/4)/camera_freq, INT_LEVEL_LOW);
 		}
-		else if (camera_freq <= 512)
+		else /*if (camera_freq <= 512)*/
 		{
 			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV2, (32000000/2)/camera_freq, INT_LEVEL_LOW);
 		}
+		/*
 		else if (camera_freq <= 1024)
 		{
 			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV1, (32000000/1)/camera_freq, INT_LEVEL_LOW);
 		}
+		*/
 	}
 }
 bool camera1_pulse;
@@ -99,6 +108,13 @@ void start_camera1(void)
 	{
 		camera1_pulse = true;
 		camera1_sync_sec_counter = -1;
+
+		if (read_CAM1_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
+		{
+			app_regs.REG_SYNC1 = 0;
+			core_func_send_event(ADD_REG_SYNC1, true);
+		}		
+		clr_CAM1_SYNC;
 
 		if (camera_freq < 8)
 		{
@@ -116,28 +132,30 @@ void start_camera1(void)
 		{
 			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV4, (32000000/4)/camera_freq, INT_LEVEL_LOW);
 		}
-		else if (camera_freq <= 512)
+		else /*if (camera_freq <= 512)*/
 		{
 			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV2, (32000000/2)/camera_freq, INT_LEVEL_LOW);
 		}
+		/*
 		else if (camera_freq <= 1024)
 		{
 			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV1, (32000000/1)/camera_freq, INT_LEVEL_LOW);
 		}
+		*/
 	}
 }
 void stop_camera0(void)
 {
 	if (TCC0_CTRLA != 0 && TCC0_CTRLB == 0)	// Running but not running PWM mode
 	{
-		clr_CAM0_SYNC;
-		clr_CAM0_TRIG;
-
-		if (!read_CAM0_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
+		if (read_CAM0_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
 		{
 			app_regs.REG_SYNC0 = 0;
 			core_func_send_event(ADD_REG_SYNC0, true);
 		}
+		
+		clr_CAM0_SYNC;
+		clr_CAM0_TRIG;
 
 		timer_type0_stop(&TCC0);
 	}
@@ -146,14 +164,14 @@ void stop_camera1(void)
 {
 	if (TCD0_CTRLA != 0 && TCD0_CTRLB == 0)	// Running but not running PWM mode
 	{
-		clr_CAM1_SYNC;
-		clr_CAM1_TRIG;
-
-		if (!read_CAM1_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
+		if (read_CAM1_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
 		{
 			app_regs.REG_SYNC1 = 0;
 			core_func_send_event(ADD_REG_SYNC1, true);
 		}
+
+		clr_CAM1_SYNC;
+		clr_CAM1_TRIG;
 
 		timer_type0_stop(&TCD0);
 	}
@@ -172,7 +190,7 @@ void enable_motor1(void)
 	if (TCD0_CTRLA == 0 || TCD0_CTRLB == 0)	// Not running or not in PWM mode
 	{
 		timer_type0_pwm(&TCD0, TIMER_PRESCALER_DIV64, (app_regs.REG_CAM1_MMODE_PERIOD >> 1), (app_regs.REG_CAM1_MMODE_PULSE >> 1), INT_LEVEL_OFF, INT_LEVEL_OFF);
-		clr_CAM0_TRIG;
+		clr_CAM1_TRIG;
 	}
 }
 void disable_motor0(void)
@@ -184,7 +202,7 @@ void disable_motor0(void)
 }
 void disable_motor1(void)
 {
-	if (TCD0_CTRLA != 0 && TCC0_CTRLB != 0)	// Running PWM mode
+	if (TCD0_CTRLA != 0 && TCD0_CTRLB != 0)	// Running PWM mode
 	{
 		timer_type0_stop(&TCD0);
 	}

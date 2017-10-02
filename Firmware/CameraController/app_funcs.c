@@ -88,11 +88,13 @@ bool app_write_REG_START_CAMS(void *a)
 	if (*((uint8_t*)a) & B_START_CAM0)
 	{
 		start_camera0();
+		app_regs.REG_CAM0_MODE = GM_CAM0_MODE_CAM;
 	}
 
 	if (*((uint8_t*)a) & B_START_CAM1)
 	{
 		start_camera1();
+		app_regs.REG_CAM1_MODE = GM_CAM1_MODE_CAM;
 	}
 
 	return true;
@@ -128,11 +130,13 @@ bool app_write_REG_ENABLE_MOTORS(void *a)
 	if (*((uint8_t*)a) & B_EN_MOTOR0)
 	{
 		enable_motor0();
+		app_regs.REG_CAM0_MODE = GM_CAM0_MODE_MOTOR;
 	}
 
 	if (*((uint8_t*)a) & B_EN_MOTOR1)
 	{
 		enable_motor1();
+		app_regs.REG_CAM1_MODE = GM_CAM1_MODE_MOTOR;
 	}
 
 	return true;
@@ -152,7 +156,7 @@ bool app_write_REG_DISABLE_MOTORS(void *a)
 
 	if (*((uint8_t*)a) & B_DIS_MOTOR1)
 	{
-		disable_motor0();
+		disable_motor1();
 	}
 
 	return true;
@@ -225,7 +229,7 @@ bool app_write_REG_INPUT0(void *a) { return false; }
 /************************************************************************/
 void app_read_REG_CAM0(void)
 {
-	app_regs.REG_CAM0 = read_CAM0_TRIG ? B_CAM0 : 0;
+	app_regs.REG_CAM0 = ((TCC0_CTRLA != 0) && (TCC0_CTRLB == 0)) ? B_CAM0 : 0;
 }
 bool app_write_REG_CAM0(void *a) { return false; }
 
@@ -235,7 +239,7 @@ bool app_write_REG_CAM0(void *a) { return false; }
 /************************************************************************/
 void app_read_REG_CAM1(void)
 {
-	app_regs.REG_CAM1 = read_CAM1_TRIG ? B_CAM1 : 0;
+	app_regs.REG_CAM1 = ((TCD0_CTRLA != 0) && (TCD0_CTRLB == 0)) ? B_CAM1 : 0;
 }
 bool app_write_REG_CAM1(void *a) { return false; }
 
@@ -285,17 +289,13 @@ bool app_write_REG_RESERVED0(void *a)
 /************************************************************************/
 /* REG_SYNC_INTERVAL                                                    */
 /************************************************************************/
-void app_read_REG_SYNC_INTERVAL(void)
-{
-	//app_regs.REG_SYNC_INTERVAL = 0;
-
-}
-
+void app_read_REG_SYNC_INTERVAL(void) {}
 bool app_write_REG_SYNC_INTERVAL(void *a)
 {
-	uint8_t reg = *((uint8_t*)a);
+	if (*((uint8_t*)a) < 1 || *((uint8_t*)a) > 100)
+		return false;
 
-	app_regs.REG_SYNC_INTERVAL = reg;
+	app_regs.REG_SYNC_INTERVAL = *((uint8_t*)a);
 	return true;
 }
 
@@ -352,12 +352,6 @@ bool app_write_REG_CAM0_FREQ(void *a)
 	if (*((uint16_t*)a) < 1 || *((uint16_t*)a) > 1000)
 		return false;
 	
-	if (app_regs.REG_CAM0_FREQ != *((uint8_t*)a))
-	{
-		stop_camera0();
-		start_camera0();
-	}
-
 	app_regs.REG_CAM0_FREQ = *((uint16_t*)a);
 	return true;
 }
@@ -373,7 +367,10 @@ bool app_write_REG_CAM0_MMODE_PERIOD(void *a)
 		return false;
 	
 	app_regs.REG_CAM0_MMODE_PERIOD = *((uint16_t*)a);
-	TCC0_PER = (app_regs.REG_CAM0_MMODE_PERIOD >> 1) - 1;
+	if (TCC0_CTRLA != 0 && TCC0_CTRLB != 0)
+	{
+		TCC0_PER = (app_regs.REG_CAM0_MMODE_PERIOD >> 1) - 1;
+	}
 
 	return true;
 }
@@ -420,12 +417,6 @@ bool app_write_REG_CAM1_FREQ(void *a)
 	if (*((uint16_t*)a) < 1 || *((uint16_t*)a) > 1000)
 		return false;
 	
-	if (app_regs.REG_CAM1_FREQ != *((uint8_t*)a))
-	{
-		stop_camera1();
-		start_camera1();
-	}
-
 	app_regs.REG_CAM1_FREQ = *((uint16_t*)a);
 	return true;
 }
@@ -441,7 +432,10 @@ bool app_write_REG_CAM1_MMODE_PERIOD(void *a)
 		return false;
 
 	app_regs.REG_CAM1_MMODE_PERIOD = *((uint16_t*)a);
-	TCD0_PER = (app_regs.REG_CAM1_MMODE_PERIOD >> 1) - 1;
+	if (TCD0_CTRLA != 0 && TCD0_CTRLB != 0)
+	{
+		TCD0_PER = (app_regs.REG_CAM1_MMODE_PERIOD >> 1) - 1;
+	}
 
 	return true;
 }

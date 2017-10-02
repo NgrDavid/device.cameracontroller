@@ -39,8 +39,8 @@ ISR(PORTA_INT0_vect, ISR_NAKED)
 
 	if (app_regs.REG_IN0_MODE != GM_IN0_NOT_USED)
 	{
-		bool trig0_is_camera = ((app_regs.REG_CAM0 & MSK_CAM0_MODE) == GM_CAM0_MODE_CAM);
-		bool trig1_is_camera = ((app_regs.REG_CAM1 & MSK_CAM1_MODE) == GM_CAM1_MODE_CAM);
+		bool trig0_is_camera = ((app_regs.REG_CAM0_MODE & MSK_CAM0_MODE) == GM_CAM0_MODE_CAM);
+		bool trig1_is_camera = ((app_regs.REG_CAM1_MODE & MSK_CAM1_MODE) == GM_CAM1_MODE_CAM);
 
 		if (read_INPUT0)	// Input 0 is high level
 		{
