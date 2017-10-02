@@ -48,30 +48,68 @@ void init_ios(void);
 /************************************************************************/
 typedef struct
 {
-	uint16_t REG_INPUTS_STATE;
+	uint8_t REG_START_CAMS;
+	uint8_t REG_STOP_CAMS;
+	uint8_t REG_ENABLE_MOTORS;
+	uint8_t REG_DISABLE_MOTORS;
+	uint8_t REG_SET_OUTPUTS;
+	uint8_t REG_CLR_OUTPUTS;
 	uint8_t REG_OUTPUTS;
-	uint8_t REG_INPUT_CATCH_MODE;
-	uint8_t REG_OUTPUT_MODE;
+	uint8_t REG_INPUT0;
+	uint8_t REG_CAM0;
+	uint8_t REG_CAM1;
+	uint8_t REG_SYNC0;
+	uint8_t REG_SYNC1;
+	uint8_t REG_MOTORS_STATE;
 	uint8_t REG_RESERVED0;
+	uint8_t REG_SYNC_INTERVAL;
 	uint8_t REG_RESERVED1;
+	uint8_t REG_IN0_MODE;
+	uint8_t REG_CAM0_MODE;
+	uint16_t REG_CAM0_FREQ;
+	uint16_t REG_CAM0_MMODE_PERIOD;
+	uint16_t REG_CAM0_MMODE_PULSE;
+	uint8_t REG_CAM1_MODE;
+	uint16_t REG_CAM1_FREQ;
+	uint16_t REG_CAM1_MMODE_PERIOD;
+	uint16_t REG_CAM1_MMODE_PULSE;
 	uint8_t REG_RESERVED2;
 	uint8_t REG_RESERVED3;
-	uint8_t REG_EVNT_ENABLE;
+	uint16_t REG_EVT_EN;
 } AppRegs;
 
 /************************************************************************/
 /* Registers' address                                                   */
 /************************************************************************/
 /* Registers */
-#define ADD_REG_INPUTS_STATE                32 // U16    State of each input (the address is included in the MSbits)
-#define ADD_REG_OUTPUTS                     33 // U8     
-#define ADD_REG_INPUT_CATCH_MODE            34 // U8     Configures when inputs will be catched
-#define ADD_REG_OUTPUT_MODE                 35 // U8     Configures how the output behaves
-#define ADD_REG_RESERVED0                   36 // U8     Not used
-#define ADD_REG_RESERVED1                   37 // U8     Not used
-#define ADD_REG_RESERVED2                   38 // U8     Not used
-#define ADD_REG_RESERVED3                   39 // U8     Not used
-#define ADD_REG_EVNT_ENABLE                 40 // U8     Enable the Events
+#define ADD_REG_START_CAMS                  32 // U8     Start cameras triggering
+#define ADD_REG_STOP_CAMS                   33 // U8     Stop cameras triggering
+#define ADD_REG_ENABLE_MOTORS               34 // U8     Start sending pulses to the motors
+#define ADD_REG_DISABLE_MOTORS              35 // U8     Stop sending ulses to the motors
+#define ADD_REG_SET_OUTPUTS                 36 // U8     Set the outputs
+#define ADD_REG_CLR_OUTPUTS                 37 // U8     Set the outputs
+#define ADD_REG_OUTPUTS                     38 // U8     Control outputs' state
+#define ADD_REG_INPUT0                      39 // U8     Input0's state (read only)
+#define ADD_REG_CAM0                        40 // U8     Camera 0's triggering (read only)
+#define ADD_REG_CAM1                        41 // U8     Camera 1's triggering (read only)
+#define ADD_REG_SYNC0                       42 // U8     Sync 0 was set (read only)
+#define ADD_REG_SYNC1                       43 // U8     Sync 1 was set (read only)
+#define ADD_REG_MOTORS_STATE                44 // U8     State of the motors (enabled or disabled) (read only)
+#define ADD_REG_RESERVED0                   45 // U8     Reserved
+#define ADD_REG_SYNC_INTERVAL               46 // U8     Configures the interval in seconds between each sync pulse
+#define ADD_REG_RESERVED1                   47 // U8     Reserved
+#define ADD_REG_IN0_MODE                    48 // U8     Select the funcionality of Input 0
+#define ADD_REG_CAM0_MODE                   49 // U8     Configures when the camera is triggered
+#define ADD_REG_CAM0_FREQ                   50 // U16    Configures the camera 0's sample frequency [1;600]
+#define ADD_REG_CAM0_MMODE_PERIOD           51 // U16    Configures the servo motor period (us) when using motor controller mode (sensitive to 2 us)
+#define ADD_REG_CAM0_MMODE_PULSE            52 // U16    Configures the servo motor pulse (us) when using motor controller mode (sensitive to 2 us)
+#define ADD_REG_CAM1_MODE                   53 // U8     Configures when the camera is triggered
+#define ADD_REG_CAM1_FREQ                   54 // U16    Configures the camera 1's sample frequency [1;600]
+#define ADD_REG_CAM1_MMODE_PERIOD           55 // U16    Configures the servo motor period (us) when using motor controller mode (sensitive to 2 us)
+#define ADD_REG_CAM1_MMODE_PULSE            56 // U16    Configures the servo motor pulse (us) when using motor controller mode (sensitive to 2 us)
+#define ADD_REG_RESERVED2                   57 // U8     Reserved for possible future use
+#define ADD_REG_RESERVED3                   58 // U8     Reserved for possible future use
+#define ADD_REG_EVT_EN                      59 // U16    Enable the Events
 
 /************************************************************************/
 /* PWM Generator registers' memory limits                               */
@@ -81,46 +119,46 @@ typedef struct
 /************************************************************************/
 /* Memory limits */
 #define APP_REGS_ADD_MIN                    0x20
-#define APP_REGS_ADD_MAX                    0x28
-#define APP_NBYTES_OF_REG_BANK              10
+#define APP_REGS_ADD_MAX                    0x3B
+#define APP_NBYTES_OF_REG_BANK              35
 
 /************************************************************************/
 /* Registers' bits                                                      */
 /************************************************************************/
-#define MSK_ADDRESS                        (3<<14)      // Board's address
-#define MSK_INPUTS                         (0x1FF<<0)   // Board's inputs
-#define B_INPUT0                           (1<<0)       // Input 0
-#define B_INPUT1                           (1<<1)       // Input 1
-#define B_INPUT2                           (1<<2)       // Input 2
-#define B_INPUT3                           (1<<3)       // Input 3
-#define B_INPUT4                           (1<<4)       // Input 4
-#define B_INPUT5                           (1<<5)       // Input 5
-#define B_INPUT6                           (1<<6)       // Input 6
-#define B_INPUT7                           (1<<7)       // Input 7
-#define B_INPUT8                           (1<<8)       // Input 8
-#define B_OUTPUT0_STATE                    (1<<13)      // Reflects the Output 0 state
-#define B_ADRESS0                          (1<<14)      // Address 0
-#define B_ADRESS1                          (1<<15)      // Address 1
-#define B_OUTPUT0                          (1<<0)       // Output 0
-#define MSK_CATCH_MODE                     (15<<0)      // Catch mode
-#define GM_INMODE_DISABLED                 (0<<0)       // Catch is disabled
-#define GM_INMODE_WHEN_ANY_CHANGE          (1<<0)       // Catched everytime one of the Inputs changes
-#define GM_INMODE_RISE_ON_INPUT0           (2<<0)       // Catched when Input 0 have a rising edge
-#define GM_INMODE_FALL_ON_INPUT0           (3<<0)       // Catched when Input 0 have a falling edge
-#define GM_INMODE_100Hz                    (4<<0)       // Catched at a frequency of 100 Hz
-#define GM_INMODE_250Hz                    (5<<0)       // Catched at a frequency of 250 Hz
-#define GM_INMODE_500Hz                    (6<<0)       // Catched at a frequency of 500 Hz
-#define GM_INMODE_1000Hz                   (7<<0)       // Catched at a frequency of 1 KHz
-#define GM_INMODE_2000Hz                   (8<<0)       // Catched at a frequency of 2 KHz
-#define MSK_OUTPUT_MODE                    (7<<0)       // Output mode
-#define GM_OUTMODE_NOT_USED                (0<<0)       // Not used by the catch
-#define GM_OUTMODE_TOGGLE                  (1<<0)       // Output toggles everytime the inputs are catched
-#define GM_OUTMODE_INPUT0                  (2<<0)       // Output is equal to Input 0 (bit INPUT0)
-#define GM_OUTMODE_PULSE_5mS               (3<<0)       // Output has a positive pulse of 5 milliseconds everytime the inputs are catched
-#define GM_OUTMODE_PULSE_2mS               (4<<0)       // Output has a positive pulse of 2 milliseconds everytime the inputs are catched
-#define GM_OUTMODE_PULSE_1mS               (5<<0)       // Output has a positive pulse of 1 milliseconds everytime the inputs are catched
-#define GM_OUTMODE_PULSE_500uS             (6<<0)       // Output has a positive pulse of 500 microseconds everytime the inputs are catched
-#define GM_OUTMODE_PULSE_250uS             (7<<0)       // Output has a positive pulse of 250 microseconds everytime the inputs are catched
-#define B_EVT0                             (1<<0)       // Event of register INPUTS_STATE
+#define B_START_CAM0                       (1<<0)       // Start camera 0
+#define B_START_CAM1                       (1<<1)       // Start camera 1
+#define B_STOP_CAM0                        (1<<0)       // Stop camera 0
+#define B_STOP_CAM1                        (1<<1)       // Stop camera 1
+#define B_EN_MOTOR0                        (1<<0)       // Enable motor 0
+#define B_EN_MOTOR1                        (1<<1)       // Enable motor 1
+#define B_DIS_MOTOR0                       (1<<0)       // Disable motor 0
+#define B_DIS_MOTOR1                       (1<<1)       // Disable motor 1
+#define B_OUT_CAM_TRIG0                    (1<<0)       // Camera 0
+#define B_OUT_CAM_TRIG1                    (1<<1)       // Camera 1
+#define B_OUT_CAM_SYNC0                    (1<<2)       // Sync 0
+#define B_OUT_CAM_SYNC1                    (1<<3)       // Sync 1
+#define B_IN0                              (1<<0)       // Input 0
+#define B_CAM0                             (1<<0)       // Camera 0 was triggered
+#define B_CAM1                             (1<<0)       // Camera 1 was triggered
+#define B_SYNC0                            (1<<0)       // Camera 0's sync changed the state
+#define B_SYNC1                            (1<<0)       // Camera 1's sync changed the state
+#define B_MOTOR0                           (1<<0)       // State of motor 0 (enabled = 1)
+#define B_MOTOR1                           (1<<1)       // State of motor 1 (enabled = 1)
+#define MSK_IN0_MODE                       (7<<0)       // 
+#define GM_IN0_H_CAM0                      (0<<0)       // When logic 1: enable camera 0 or motor 0
+#define GM_IN0_H_CAM1                      (1<<0)       // When logic 1: enable camera 1 or motor 1
+#define GM_IN0_H_BOTH                      (2<<0)       // When logic 1: enable both cameras or motors
+#define GM_IN0_L_CAM0                      (3<<0)       // When logic 0: enable camera 0 or motor 0
+#define GM_IN0_L_CAM1                      (4<<0)       // When logic 0: enable camera 1 or motor 1
+#define GM_IN0_L_BOTH                      (5<<0)       // When logic 0: enable both cameras or motors
+#define GM_IN0_NOT_USED                    (6<<0)       // Used as a digital input only
+#define MSK_CAM0_MODE                      (1<<0)       // Options for CAM0
+#define GM_CAM0_MODE_CAM                   (0<<0)       // The camera 0 is triggered at a configured frequency
+#define GM_CAM0_MODE_MOTOR                 (1<<0)       // Used in servo motor controller mode
+#define MSK_CAM1_MODE                      (1<<0)       // Options for CAM1
+#define GM_CAM1_MODE_CAM                   (0<<0)       // The camera 1 is triggered at a configured frequency
+#define GM_CAM1_MODE_MOTOR                 (1<<0)       // Used in servo motor controller mode
+#define B_EVT_CAMS                         (1<<0)       // Events of registers CAMs and SYNCs
+#define B_EVT_IN0                          (1<<1)       // Event of register INPUT0
 
 #endif /* _APP_REGS_H_ */

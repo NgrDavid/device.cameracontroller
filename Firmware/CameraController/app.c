@@ -32,7 +32,13 @@ void hwbp_app_initialize(void)
 /************************************************************************/
 void core_callback_catastrophic_error_detected(void)
 {
-	
+	timer_type0_stop(&TCC0);	// Stop Cam0 or Motor0
+	timer_type0_stop(&TCD0);	// Stop Cam1 or Motor1
+
+	clr_CAM0_TRIG;
+	clr_CAM1_TRIG;
+	clr_CAM0_SYNC;
+	clr_CAM1_SYNC;
 }
 
 /************************************************************************/
@@ -46,23 +52,143 @@ void core_callback_catastrophic_error_detected(void)
 /* Load external functions if needed */
 //#include "hwbp_app_pwm_gen_funcs.c"
 
-/*
-void update_enabled_pwmx(void)
+bool camera0_pulse;
+int8_t camera0_sync_sec_counter;
+void start_camera0(void)
 {
-	if (!core_bool_is_visual_enabled())
-	return;
-	
-	if (!(app_regs.REG_CH_CONFEN & B_USEEN0) || ((app_regs.REG_CH_CONFEN & B_USEEN0) && (app_regs.REG_CH_ENABLE & B_EN0)))
-		set_ENABLED_PWM0;
-	else
-		clr_ENABLED_PWM0;
+	uint16_t camera_freq = app_regs.REG_CAM0_FREQ << 1;	// Multiply CAM_FREQ x 2
+
+	if (TCC0_CTRLA == 0 || TCC0_CTRLB != 0)					// Timer not running or in PWM mode
+	{
+		camera0_pulse = true;
+		camera0_sync_sec_counter = -1;
+
+		if (camera_freq < 8)
+		{
+			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV256, (32000000/256)/camera_freq, INT_LEVEL_LOW);
+		}
+		else if (camera_freq < 64)
+		{
+			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV64, (32000000/64)/camera_freq, INT_LEVEL_LOW);
+		}
+		else if (camera_freq < 128)
+		{
+			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV8, (32000000/8)/camera_freq, INT_LEVEL_LOW);
+		}
+		else if (camera_freq < 256)
+		{
+			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV4, (32000000/4)/camera_freq, INT_LEVEL_LOW);
+		}
+		else if (camera_freq <= 512)
+		{
+			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV2, (32000000/2)/camera_freq, INT_LEVEL_LOW);
+		}
+		else if (camera_freq <= 1024)
+		{
+			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV1, (32000000/1)/camera_freq, INT_LEVEL_LOW);
+		}
+	}
+}
+bool camera1_pulse;
+int8_t camera1_sync_sec_counter;
+void start_camera1(void)
+{
+	uint16_t camera_freq = app_regs.REG_CAM1_FREQ << 1;	// Multiply CAM_FREQ x 2
+
+	if (TCD0_CTRLA == 0 || TCD0_CTRLB != 0)					// Timer not running or in PWM mode
+	{
+		camera1_pulse = true;
+		camera1_sync_sec_counter = -1;
+
+		if (camera_freq < 8)
+		{
+			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV256, (32000000/256)/camera_freq, INT_LEVEL_LOW);
+		}
+		else if (camera_freq < 64)
+		{
+			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV64, (32000000/64)/camera_freq, INT_LEVEL_LOW);
+		}
+		else if (camera_freq < 128)
+		{
+			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV8, (32000000/8)/camera_freq, INT_LEVEL_LOW);
+		}
+		else if (camera_freq < 256)
+		{
+			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV4, (32000000/4)/camera_freq, INT_LEVEL_LOW);
+		}
+		else if (camera_freq <= 512)
+		{
+			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV2, (32000000/2)/camera_freq, INT_LEVEL_LOW);
+		}
+		else if (camera_freq <= 1024)
+		{
+			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV1, (32000000/1)/camera_freq, INT_LEVEL_LOW);
+		}
+	}
+}
+void stop_camera0(void)
+{
+	if (TCC0_CTRLA != 0 && TCC0_CTRLB == 0)	// Running but not running PWM mode
+	{
+		clr_CAM0_SYNC;
+		clr_CAM0_TRIG;
+
+		if (!read_CAM0_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
+		{
+			app_regs.REG_SYNC0 = 0;
+			core_func_send_event(ADD_REG_SYNC0, true);
+		}
+
+		timer_type0_stop(&TCC0);
+	}
+}
+void stop_camera1(void)
+{
+	if (TCD0_CTRLA != 0 && TCD0_CTRLB == 0)	// Running but not running PWM mode
+	{
+		clr_CAM1_SYNC;
+		clr_CAM1_TRIG;
+
+		if (!read_CAM1_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
+		{
+			app_regs.REG_SYNC1 = 0;
+			core_func_send_event(ADD_REG_SYNC1, true);
+		}
+
+		timer_type0_stop(&TCD0);
+	}
 }
 
-ISR(PORTB_INT0_vect, ISR_NAKED)
+void enable_motor0(void)
 {
-	reti();
+	if (TCC0_CTRLA == 0 || TCC0_CTRLB == 0)	// Not running or not in PWM mode
+	{
+		timer_type0_pwm(&TCC0, TIMER_PRESCALER_DIV64, (app_regs.REG_CAM0_MMODE_PERIOD >> 1), (app_regs.REG_CAM0_MMODE_PULSE >> 1), INT_LEVEL_OFF, INT_LEVEL_OFF);
+		clr_CAM0_TRIG;
+	}
 }
-*/
+void enable_motor1(void)
+{
+	if (TCD0_CTRLA == 0 || TCD0_CTRLB == 0)	// Not running or not in PWM mode
+	{
+		timer_type0_pwm(&TCD0, TIMER_PRESCALER_DIV64, (app_regs.REG_CAM1_MMODE_PERIOD >> 1), (app_regs.REG_CAM1_MMODE_PULSE >> 1), INT_LEVEL_OFF, INT_LEVEL_OFF);
+		clr_CAM0_TRIG;
+	}
+}
+void disable_motor0(void)
+{
+	if (TCC0_CTRLA != 0 && TCC0_CTRLB != 0)	// Running PWM mode
+	{
+		timer_type0_stop(&TCC0);
+	}
+}
+void disable_motor1(void)
+{
+	if (TCD0_CTRLA != 0 && TCC0_CTRLB != 0)	// Running PWM mode
+	{
+		timer_type0_stop(&TCD0);
+	}
+}
 
 
 /************************************************************************/
@@ -73,74 +199,61 @@ void core_callback_1st_config_hw_after_boot(void)
 	/* Initialize IOs */
 	/* Don't delete this function!!! */
 	init_ios();
-	
-	/* SYNC OUTx */
-	//io_pin2out(&PORTC, 1, OUT_IO_DIGITAL, IN_EN_IO_DIS);
-
-	/* TRIG_IN0 */
-	//io_pin2in(&PORTF, 5, PULL_IO_TRISTATE, SENSE_IO_EDGES_BOTH);
-	//io_set_int(&PORTF, INT_LEVEL_LOW, 0, (1<<5), true);
 }
 
 void core_callback_reset_registers(void)
 {
 	/* Initialize registers */
-	/*
-	app_regs.REG_CH0_FREQ = 10.0;
-	app_regs.REG_CH0_DUTYCYCLE = 50;
+	app_regs.REG_START_CAMS = 0;
+	app_regs.REG_STOP_CAMS = 0;
+	app_regs.REG_ENABLE_MOTORS = 0;
+	app_regs.REG_DISABLE_MOTORS = 0;
+	app_regs.REG_SET_OUTPUTS = 0;
+	app_regs.REG_CLR_OUTPUTS = 0;
+	app_regs.REG_OUTPUTS = 0;
 	
-	if ((app_regs.REG_MODE0 & B_M0) == GM_USB_MODE)
-	{
-		app_regs.REG_OUT0 = 0;
-	}
+	app_regs.REG_RESERVED0 = 0;
 
-	if ((app_regs.REG_MODE1AND2 & B_M1AND2) == GM_USB_MODE)
-	{
-		app_regs.REG_OUT1 = 0;
-		app_regs.REG_OUT2 = 0;
-	}
-	*/
+	app_regs.REG_SYNC_INTERVAL = 1;
+	app_regs.REG_RESERVED1 = 0;
+
+	app_regs.REG_IN0_MODE = GM_IN0_H_BOTH;
+	
+	app_regs.REG_CAM0_MODE = GM_CAM0_MODE_CAM;
+	app_regs.REG_CAM0_FREQ = 30;
+	app_regs.REG_CAM0_MMODE_PERIOD = 20000;
+	app_regs.REG_CAM0_MMODE_PULSE = 1500;
+	app_regs.REG_CAM1_MODE = GM_CAM1_MODE_CAM;
+	app_regs.REG_CAM1_FREQ = 30;
+	app_regs.REG_CAM1_MMODE_PERIOD = 20000;
+	app_regs.REG_CAM1_MMODE_PULSE = 1500;
+	
+	app_regs.REG_RESERVED2 = 0;
+	app_regs.REG_RESERVED3 = 0;
+	
+	app_regs.REG_EVT_EN = B_EVT_CAMS | B_EVT_IN0;
 }
 
 void core_callback_registers_were_reinitialized(void)
 {
-	/* Check if the user indication is valid */
-	//update_enabled_pwmx();
-	
-	/* Update state register */
-	//app_regs.REG_TRIG_STATE = (read_TRIG_IN0) ? B_LTRG0 : 0;
-	//app_regs.REG_TRIG_STATE |= (read_TRIG_IN1) ? B_LTRG1 : 0;
-
 	/* Reset start bits */
-	//app_regs.REG_TRG0_START = 0;
-	//app_regs.REG_TRG1_START = 0;
-
-	/*
-	if ((app_regs.REG_MODE0 & B_M0) == GM_BNC_MODE)
-	{
-		app_regs.REG_OUT0 = app_regs.REG_CTRL0;
-		set_OUT0(app_regs.REG_OUT0);
-	}
-	else
-	{
-		set_OUT0(app_regs.REG_OUT0);
-	}
-	*/
+	app_regs.REG_START_CAMS = 0;
+	app_regs.REG_STOP_CAMS = 0;
+	app_regs.REG_ENABLE_MOTORS = 0;
+	app_regs.REG_DISABLE_MOTORS = 0;
+	app_regs.REG_SET_OUTPUTS = 0;
+	app_regs.REG_CLR_OUTPUTS = 0;
+	
+	/* Update outputs */
+	app_read_REG_OUTPUTS();
+	app_write_REG_OUTPUTS(&app_regs.REG_OUTPUTS);
 }
 
 /************************************************************************/
 /* Callbacks: Visualization                                             */
 /************************************************************************/
-void core_callback_visualen_to_on(void)
-{
-	/* Update channels enable indicators */
-	//update_enabled_pwmx();
-}
-
-void core_callback_visualen_to_off(void)
-{
-	/* Clear all the enabled indicators */
-}
+void core_callback_visualen_to_on(void) {}
+void core_callback_visualen_to_off(void) {}
 
 /************************************************************************/
 /* Callbacks: Change on the operation mode                              */
@@ -153,9 +266,45 @@ void core_callback_device_to_speed(void) {}
 /************************************************************************/
 /* Callbacks: 1 ms timer                                                */
 /************************************************************************/
-void core_callback_t_before_exec(void) {}
+uint16_t _2000ms_counter = 0;
+
+void core_callback_t_before_exec(void)
+{
+	if (++_2000ms_counter == 2000)
+	{
+		if ((TCC0_CTRLA != 0) && (TCC0_CTRLB == 0))
+		{
+			if (++camera0_sync_sec_counter == app_regs.REG_SYNC_INTERVAL)
+			{
+				camera0_sync_sec_counter = 0;
+
+				tgl_CAM0_SYNC;
+				if (app_regs.REG_EVT_EN & B_EVT_CAMS)
+				{
+					app_regs.REG_SYNC0 = read_CAM0_SYNC ? B_SYNC0 : 0;
+					core_func_send_event(ADD_REG_SYNC0, true);
+				}
+			}
+		}
+
+		if ((TCD0_CTRLA != 0) && (TCD0_CTRLB == 0))
+		{
+			if (++camera1_sync_sec_counter == app_regs.REG_SYNC_INTERVAL)
+			{
+				camera1_sync_sec_counter = 0;
+
+				tgl_CAM1_SYNC;
+				if (app_regs.REG_EVT_EN & B_EVT_CAMS)
+				{
+					app_regs.REG_SYNC1 = read_CAM1_SYNC ? B_SYNC1 : 0;
+					core_func_send_event(ADD_REG_SYNC1, true);
+				}
+			}
+		}
+	}
+}
 void core_callback_t_after_exec(void) {}
-void core_callback_t_new_second(void) {}
+void core_callback_t_new_second(void) { _2000ms_counter = 0; }
 void core_callback_t_500us(void) {}
 void core_callback_t_1ms(void) {}
 
