@@ -98,7 +98,7 @@ typedef struct
 #define ADD_REG_RESERVED0                   45 // U8     Reserved
 #define ADD_REG_SYNC_INTERVAL               46 // U8     Configures the interval in seconds between each sync pulse
 #define ADD_REG_RESERVED1                   47 // U8     Reserved
-#define ADD_REG_IN0_MODE                    48 // U8     Select the funcionality of Input 0
+#define ADD_REG_IN0_MODE                    48 // U8     Select the functionality of Input 0
 #define ADD_REG_CAM0_MODE                   49 // U8     Configures when the camera is triggered
 #define ADD_REG_CAM0_FREQ                   50 // U16    Configures the camera 0's sample frequency [1;600]
 #define ADD_REG_CAM0_MMODE_PERIOD           51 // U16    Configures the servo motor period (us) when using motor controller mode (sensitive to 2 us)
@@ -133,9 +133,9 @@ typedef struct
 #define B_EN_MOTOR1                        (1<<1)       // Enable motor 1
 #define B_DIS_MOTOR0                       (1<<0)       // Disable motor 0
 #define B_DIS_MOTOR1                       (1<<1)       // Disable motor 1
-#define B_OUT_CAM_TRIG0                    (1<<0)       // Camera 0
-#define B_OUT_CAM_TRIG1                    (1<<1)       // Camera 1
-#define B_OUT_CAM_SYNC0                    (1<<2)       // Sync 0
+#define B_OUT_CAM_TRIG0                    (1<<0)       // Trigger 0
+#define B_OUT_CAM_SYNC0                    (1<<1)       // Sync 0
+#define B_OUT_CAM_TRIG1                    (1<<2)       // Trigger 1
 #define B_OUT_CAM_SYNC1                    (1<<3)       // Sync 1
 #define B_IN0                              (1<<0)       // Input 0
 #define B_CAM0                             (1<<0)       // Camera 0 was triggered
