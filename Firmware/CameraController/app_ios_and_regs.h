@@ -75,7 +75,7 @@ typedef struct
 	uint16_t REG_CAM1_MMODE_PULSE;
 	uint8_t REG_RESERVED2;
 	uint8_t REG_RESERVED3;
-	uint16_t REG_EVT_EN;
+	uint8_t REG_EVT_EN;
 } AppRegs;
 
 /************************************************************************/
@@ -109,7 +109,7 @@ typedef struct
 #define ADD_REG_CAM1_MMODE_PULSE            56 // U16    Configures the servo motor pulse (us) when using motor controller mode (sensitive to 2 us)
 #define ADD_REG_RESERVED2                   57 // U8     Reserved for possible future use
 #define ADD_REG_RESERVED3                   58 // U8     Reserved for possible future use
-#define ADD_REG_EVT_EN                      59 // U16    Enable the Events
+#define ADD_REG_EVT_EN                      59 // U8     Enable the Events
 
 /************************************************************************/
 /* PWM Generator registers' memory limits                               */
@@ -120,7 +120,7 @@ typedef struct
 /* Memory limits */
 #define APP_REGS_ADD_MIN                    0x20
 #define APP_REGS_ADD_MAX                    0x3B
-#define APP_NBYTES_OF_REG_BANK              35
+#define APP_NBYTES_OF_REG_BANK              34
 
 /************************************************************************/
 /* Registers' bits                                                      */

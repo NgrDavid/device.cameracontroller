@@ -488,16 +488,9 @@ bool app_write_REG_RESERVED3(void *a)
 /************************************************************************/
 /* REG_EVT_EN                                                           */
 /************************************************************************/
-void app_read_REG_EVT_EN(void)
-{
-	//app_regs.REG_EVT_EN = 0;
-
-}
-
+void app_read_REG_EVT_EN(void) {}
 bool app_write_REG_EVT_EN(void *a)
 {
-	uint16_t reg = *((uint16_t*)a);
-
-	app_regs.REG_EVT_EN = reg;
+	app_regs.REG_EVT_EN = *((uint8_t*)a);
 	return true;
 }
