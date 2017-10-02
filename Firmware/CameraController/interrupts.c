@@ -29,6 +29,15 @@ extern AppRegs app_regs;
 /************************************************************************/ 
 /* INPUT0                                                               */
 /************************************************************************/
+extern void start_camera0(void);
+extern void start_camera1(void);
+extern void stop_camera0(void);
+extern void stop_camera1(void);
+extern void enable_motor0(void);
+extern void enable_motor1(void);
+extern void disable_motor0(void);
+extern void disable_motor1(void);
+
 ISR(PORTA_INT0_vect, ISR_NAKED)
 {
 	if (app_regs.REG_EVT_EN & B_EVT_IN0)
@@ -44,11 +53,11 @@ ISR(PORTA_INT0_vect, ISR_NAKED)
 
 		if (read_INPUT0)	// Input 0 is high level
 		{
-			if (app_regs.REG_IN0_MODE == GM_IN0_H_CAM0)
-				if (trig0_is_camera) start_camera0();	else enable_motor0();
+			if (app_regs.REG_IN0_MODE == GM_IN0_H_CAM0) {
+				if (trig0_is_camera) start_camera0();	else enable_motor0(); }
 				
-			if (app_regs.REG_IN0_MODE == GM_IN0_H_CAM1)
-				if (trig1_is_camera) start_camera1();	else enable_motor1();
+			if (app_regs.REG_IN0_MODE == GM_IN0_H_CAM1) {
+				if (trig1_is_camera) start_camera1();	else enable_motor1(); }
 			
 			if (app_regs.REG_IN0_MODE == GM_IN0_H_BOTH)
 			{
@@ -56,11 +65,11 @@ ISR(PORTA_INT0_vect, ISR_NAKED)
 				if (trig1_is_camera) start_camera1();	else enable_motor1();
 			}
 			
-			if (app_regs.REG_IN0_MODE == GM_IN0_L_CAM0)
-				if (trig0_is_camera) stop_camera0();	else disable_motor0();
+			if (app_regs.REG_IN0_MODE == GM_IN0_L_CAM0) {
+				if (trig0_is_camera) stop_camera0();	else disable_motor0(); }
 			
-			if (app_regs.REG_IN0_MODE == GM_IN0_L_CAM1)
-				if (trig1_is_camera) stop_camera1();	else disable_motor1();
+			if (app_regs.REG_IN0_MODE == GM_IN0_L_CAM1) {
+				if (trig1_is_camera) stop_camera1();	else disable_motor1(); }
 			
 			if (app_regs.REG_IN0_MODE == GM_IN0_L_BOTH)
 			{
@@ -71,11 +80,11 @@ ISR(PORTA_INT0_vect, ISR_NAKED)
 		else   // Input 0 is low level
 		{
 			
-			if (app_regs.REG_IN0_MODE == GM_IN0_H_CAM0)
-				if (trig0_is_camera) stop_camera0();	else disable_motor0();
+			if (app_regs.REG_IN0_MODE == GM_IN0_H_CAM0) {
+				if (trig0_is_camera) stop_camera0();	else disable_motor0(); }
 			
-			if (app_regs.REG_IN0_MODE == GM_IN0_H_CAM1)
-				if (trig1_is_camera) stop_camera1();	else disable_motor1();
+			if (app_regs.REG_IN0_MODE == GM_IN0_H_CAM1) {
+				if (trig1_is_camera) stop_camera1();	else disable_motor1(); }
 			
 			if (app_regs.REG_IN0_MODE == GM_IN0_H_BOTH)
 			{
@@ -83,11 +92,11 @@ ISR(PORTA_INT0_vect, ISR_NAKED)
 				if (trig1_is_camera) stop_camera1();	else disable_motor1();
 			}
 			
-			if (app_regs.REG_IN0_MODE == GM_IN0_L_CAM0)
-				if (trig0_is_camera) start_camera0();	else enable_motor0();
+			if (app_regs.REG_IN0_MODE == GM_IN0_L_CAM0) {
+				if (trig0_is_camera) start_camera0();	else enable_motor0(); }
 			
-			if (app_regs.REG_IN0_MODE == GM_IN0_L_CAM1)
-				if (trig1_is_camera) start_camera1();	else enable_motor1();
+			if (app_regs.REG_IN0_MODE == GM_IN0_L_CAM1) {
+				if (trig1_is_camera) start_camera1();	else enable_motor1(); }
 			
 			if (app_regs.REG_IN0_MODE == GM_IN0_L_BOTH)
 			{
