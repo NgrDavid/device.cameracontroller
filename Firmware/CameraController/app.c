@@ -276,7 +276,13 @@ void core_callback_visualen_to_off(void) {}
 /************************************************************************/
 /* Callbacks: Change on the operation mode                              */
 /************************************************************************/
-void core_callback_device_to_standby(void) {}
+void core_callback_device_to_standby(void)
+{
+	stop_camera0();
+	stop_camera1();
+	disable_motor0();
+	disable_motor1();
+}
 void core_callback_device_to_active(void) {}
 void core_callback_device_to_enchanced_active(void) {}
 void core_callback_device_to_speed(void) {}
