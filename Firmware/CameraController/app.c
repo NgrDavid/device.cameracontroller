@@ -54,13 +54,21 @@ void core_callback_catastrophic_error_detected(void)
 
 bool camera0_pulse;
 int8_t camera0_sync_sec_counter;
+
+#define rise_cam0_trig_now	set_CAM0_TRIG; \
+                            if (app_regs.REG_EVT_EN & B_EVT_CAMS) \
+                            {   \
+                                app_regs.REG_CAM0 = 1;  \
+                                core_func_send_event(ADD_REG_CAM0, true);   \
+                            }
+
 void start_camera0(void)
 {
 	uint16_t camera_freq = app_regs.REG_CAM0_FREQ << 1;	// Multiply CAM_FREQ x 2
 
 	if (TCC0_CTRLA == 0 || TCC0_CTRLB != 0)					// Timer not running or in PWM mode
 	{
-		camera0_pulse = true;
+		camera0_pulse = false;
 		camera0_sync_sec_counter = -1;
 
 		if (read_CAM0_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
@@ -73,22 +81,27 @@ void start_camera0(void)
 		if (camera_freq < 8)
 		{
 			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV256, (32000000/256)/camera_freq, INT_LEVEL_LOW);
+            rise_cam0_trig_now;
 		}
 		else if (camera_freq < 64)
 		{
 			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV64, (32000000/64)/camera_freq, INT_LEVEL_LOW);
+			rise_cam0_trig_now;
 		}
 		else if (camera_freq < 128)
 		{
 			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV8, (32000000/8)/camera_freq, INT_LEVEL_LOW);
+			rise_cam0_trig_now;
 		}
 		else if (camera_freq < 256)
 		{
 			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV4, (32000000/4)/camera_freq, INT_LEVEL_LOW);
+			rise_cam0_trig_now;
 		}
 		else /*if (camera_freq <= 512)*/
 		{
 			timer_type0_enable(&TCC0, TIMER_PRESCALER_DIV2, (32000000/2)/camera_freq, INT_LEVEL_LOW);
+			rise_cam0_trig_now;
 		}
 		/*
 		else if (camera_freq <= 1024)
@@ -100,13 +113,21 @@ void start_camera0(void)
 }
 bool camera1_pulse;
 int8_t camera1_sync_sec_counter;
+
+#define rise_cam1_trig_now	set_CAM1_TRIG; \
+                            if (app_regs.REG_EVT_EN & B_EVT_CAMS) \
+                            {   \
+                                app_regs.REG_CAM1 = 1;  \
+                                core_func_send_event(ADD_REG_CAM1, true);   \
+                            }
+
 void start_camera1(void)
 {
 	uint16_t camera_freq = app_regs.REG_CAM1_FREQ << 1;	// Multiply CAM_FREQ x 2
 
 	if (TCD0_CTRLA == 0 || TCD0_CTRLB != 0)					// Timer not running or in PWM mode
 	{
-		camera1_pulse = true;
+		camera1_pulse = false;
 		camera1_sync_sec_counter = -1;
 
 		if (read_CAM1_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
@@ -119,22 +140,27 @@ void start_camera1(void)
 		if (camera_freq < 8)
 		{
 			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV256, (32000000/256)/camera_freq, INT_LEVEL_LOW);
+			rise_cam1_trig_now;
 		}
 		else if (camera_freq < 64)
 		{
 			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV64, (32000000/64)/camera_freq, INT_LEVEL_LOW);
+			rise_cam1_trig_now;
 		}
 		else if (camera_freq < 128)
 		{
 			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV8, (32000000/8)/camera_freq, INT_LEVEL_LOW);
+			rise_cam1_trig_now;
 		}
 		else if (camera_freq < 256)
 		{
 			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV4, (32000000/4)/camera_freq, INT_LEVEL_LOW);
+			rise_cam1_trig_now;
 		}
 		else /*if (camera_freq <= 512)*/
 		{
 			timer_type0_enable(&TCD0, TIMER_PRESCALER_DIV2, (32000000/2)/camera_freq, INT_LEVEL_LOW);
+			rise_cam1_trig_now;
 		}
 		/*
 		else if (camera_freq <= 1024)
