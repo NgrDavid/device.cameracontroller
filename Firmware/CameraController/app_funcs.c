@@ -173,6 +173,15 @@ bool app_write_REG_SET_OUTPUTS(void *a)
 	if (*((uint8_t*)a) & B_OUT_CAM_SYNC0) set_CAM0_SYNC;
 	if (*((uint8_t*)a) & B_OUT_CAM_TRIG1) set_CAM1_TRIG;
 	if (*((uint8_t*)a) & B_OUT_CAM_SYNC1) set_CAM1_SYNC;
+    
+    /* Update REG_OUTPUTs since this value will be used on the function */
+    /* core_callback_registers_were_reinitialized() to set the default  */
+    /* values of the outputs.                                           */
+    app_regs.REG_OUTPUTS = read_CAM0_TRIG ? B_OUT_CAM_TRIG0 : 0;
+    app_regs.REG_OUTPUTS |= read_CAM0_SYNC ? B_OUT_CAM_SYNC0 : 0;
+    app_regs.REG_OUTPUTS |= read_CAM1_TRIG ? B_OUT_CAM_TRIG1 : 0;
+    app_regs.REG_OUTPUTS |= read_CAM1_SYNC ? B_OUT_CAM_SYNC1 : 0;
+        
 	return true;
 }
 
@@ -187,6 +196,15 @@ bool app_write_REG_CLR_OUTPUTS(void *a)
 	if (*((uint8_t*)a) & B_OUT_CAM_SYNC0) clr_CAM0_SYNC;
 	if (*((uint8_t*)a) & B_OUT_CAM_TRIG1) clr_CAM1_TRIG;
 	if (*((uint8_t*)a) & B_OUT_CAM_SYNC1) clr_CAM1_SYNC;
+    
+    /* Update REG_OUTPUTs since this value will be used on the function */
+    /* core_callback_registers_were_reinitialized() to set the default  */
+    /* values of the outputs.                                           */
+    app_regs.REG_OUTPUTS = read_CAM0_TRIG ? B_OUT_CAM_TRIG0 : 0;
+    app_regs.REG_OUTPUTS |= read_CAM0_SYNC ? B_OUT_CAM_SYNC0 : 0;
+    app_regs.REG_OUTPUTS |= read_CAM1_TRIG ? B_OUT_CAM_TRIG1 : 0;
+    app_regs.REG_OUTPUTS |= read_CAM1_SYNC ? B_OUT_CAM_SYNC1 : 0;
+        
 	return true;
 }
 
@@ -204,10 +222,10 @@ void app_read_REG_OUTPUTS(void)
 
 bool app_write_REG_OUTPUTS(void *a)
 {
-	app_write_REG_SET_OUTPUTS(a);
-
-	uint8_t aux = ~(*(uint8_t*)a);
-	app_write_REG_CLR_OUTPUTS(&aux);
+	if (*((uint8_t*)a) & B_OUT_CAM_TRIG0) set_CAM0_TRIG;
+	if (*((uint8_t*)a) & B_OUT_CAM_SYNC0) set_CAM0_SYNC;
+	if (*((uint8_t*)a) & B_OUT_CAM_TRIG1) set_CAM1_TRIG;
+	if (*((uint8_t*)a) & B_OUT_CAM_SYNC1) set_CAM1_SYNC;
 
 	app_regs.REG_OUTPUTS = *(uint8_t*)a;
 	return true;
