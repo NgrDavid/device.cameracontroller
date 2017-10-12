@@ -289,8 +289,10 @@ void core_callback_registers_were_reinitialized(void)
 	app_regs.REG_CLR_OUTPUTS = 0;
 	
 	/* Update outputs */
-	app_read_REG_OUTPUTS();
 	app_write_REG_OUTPUTS(&app_regs.REG_OUTPUTS);
+    
+    /* Update modes */
+    app_write_REG_IN0_MODE(&app_regs.REG_IN0_MODE);
 }
 
 /************************************************************************/

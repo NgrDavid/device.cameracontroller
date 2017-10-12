@@ -341,6 +341,23 @@ bool app_write_REG_IN0_MODE(void *a)
 		return false;
 
 	app_regs.REG_IN0_MODE = reg;
+    
+    if ((app_regs.REG_IN0_MODE == GM_IN0_H_CAM0) || (app_regs.REG_IN0_MODE == GM_IN0_L_CAM0) || (app_regs.REG_IN0_MODE == GM_IN0_NOT_USED))
+    {
+        if (app_regs.REG_CAM1_MODE == GM_CAM1_MODE_MOTOR)
+        {
+            enable_motor1();
+        }
+    }
+    
+    if ((app_regs.REG_IN0_MODE == GM_IN0_H_CAM1) || (app_regs.REG_IN0_MODE == GM_IN0_L_CAM1) || (app_regs.REG_IN0_MODE == GM_IN0_NOT_USED))
+    {
+        if (app_regs.REG_CAM0_MODE == GM_CAM0_MODE_MOTOR)
+        {
+            enable_motor0();
+        }
+    }
+    
 	return true;
 }
 
@@ -357,6 +374,19 @@ bool app_write_REG_CAM0_MODE(void *a)
 		return false;
 
 	app_regs.REG_CAM0_MODE = reg;
+    
+    if (app_regs.REG_CAM0_MODE == GM_CAM0_MODE_MOTOR)
+    {
+        if ((app_regs.REG_IN0_MODE == GM_IN0_H_CAM1) || (app_regs.REG_IN0_MODE == GM_IN0_L_CAM1) || (app_regs.REG_IN0_MODE == GM_IN0_NOT_USED))
+        {
+            enable_motor0();
+        }
+    }
+    else
+    {
+        disable_motor0();
+    }
+    
 	return true;
 }
 
@@ -422,6 +452,19 @@ bool app_write_REG_CAM1_MODE(void *a)
 		return false;
 
 	app_regs.REG_CAM1_MODE = reg;
+	
+	if (app_regs.REG_CAM1_MODE == GM_CAM1_MODE_MOTOR)
+	{
+    	if ((app_regs.REG_IN0_MODE == GM_IN0_H_CAM0) || (app_regs.REG_IN0_MODE == GM_IN0_L_CAM0) || (app_regs.REG_IN0_MODE == GM_IN0_NOT_USED))
+    	{
+        	enable_motor1();
+    	}
+	}
+    else
+    {
+        disable_motor1();
+    }
+	
 	return true;
 }
 
