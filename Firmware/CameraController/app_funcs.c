@@ -397,7 +397,7 @@ bool app_write_REG_CAM0_MODE(void *a)
 void app_read_REG_CAM0_FREQ(void) {}
 bool app_write_REG_CAM0_FREQ(void *a)
 {
-	if (*((uint16_t*)a) < 1 || *((uint16_t*)a) > 1000)
+	if (*((uint16_t*)a) < 2 || *((uint16_t*)a) > 1000)
 		return false;
 	
 	app_regs.REG_CAM0_FREQ = *((uint16_t*)a);
@@ -475,7 +475,7 @@ bool app_write_REG_CAM1_MODE(void *a)
 void app_read_REG_CAM1_FREQ(void) {}
 bool app_write_REG_CAM1_FREQ(void *a)
 {
-	if (*((uint16_t*)a) < 1 || *((uint16_t*)a) > 1000)
+	if (*((uint16_t*)a) < 2 || *((uint16_t*)a) > 1000)
 		return false;
 	
 	app_regs.REG_CAM1_FREQ = *((uint16_t*)a);
