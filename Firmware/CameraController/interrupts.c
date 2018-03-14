@@ -112,6 +112,9 @@ ISR(PORTA_INT0_vect, ISR_NAKED)
 extern bool camera0_pulse;
 extern bool camera1_pulse;
 
+extern bool stop_cam0;
+extern bool stop_cam1;
+
 ISR(TCC0_OVF_vect, ISR_NAKED)
 {
 	if (camera0_pulse)
@@ -129,6 +132,22 @@ ISR(TCC0_OVF_vect, ISR_NAKED)
 	{
 		camera0_pulse = true;
 		clr_CAM0_TRIG;
+        
+        if (stop_cam0)
+        {
+            stop_cam0 = false;
+            
+            if (read_CAM0_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
+            {
+                app_regs.REG_SYNC0 = 0;
+                core_func_send_event(ADD_REG_SYNC0, true);
+            }
+            
+            clr_CAM0_SYNC;
+            clr_CAM0_TRIG;
+
+            timer_type0_stop(&TCC0);          
+        }        
 	}
 
 	reti();
@@ -151,6 +170,22 @@ ISR(TCD0_OVF_vect, ISR_NAKED)
 	{
 		camera1_pulse = true;
 		clr_CAM1_TRIG;
+		
+		if (stop_cam1)
+		{
+    		stop_cam1 = false;
+            
+		    if (read_CAM1_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
+		    {
+    		    app_regs.REG_SYNC1 = 0;
+    		    core_func_send_event(ADD_REG_SYNC1, true);
+		    }
+
+		    clr_CAM1_SYNC;
+		    clr_CAM1_TRIG;
+
+		    timer_type0_stop(&TCD0);
+		}
 	}
 
 	reti();

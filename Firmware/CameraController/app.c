@@ -189,36 +189,22 @@ void start_camera1(void)
 		*/
 	}
 }
+
+bool stop_cam0 = false;
+bool stop_cam1 = false;
+
 void stop_camera0(void)
 {
 	if (TCC0_CTRLA != 0 && TCC0_CTRLB == 0)	// Running but not running PWM mode
 	{
-		if (read_CAM0_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
-		{
-			app_regs.REG_SYNC0 = 0;
-			core_func_send_event(ADD_REG_SYNC0, true);
-		}
-		
-		clr_CAM0_SYNC;
-		clr_CAM0_TRIG;
-
-		timer_type0_stop(&TCC0);
+		stop_cam0 = true;
 	}
 }
 void stop_camera1(void)
 {
 	if (TCD0_CTRLA != 0 && TCD0_CTRLB == 0)	// Running but not running PWM mode
 	{
-		if (read_CAM1_SYNC && (app_regs.REG_EVT_EN & B_EVT_CAMS))
-		{
-			app_regs.REG_SYNC1 = 0;
-			core_func_send_event(ADD_REG_SYNC1, true);
-		}
-
-		clr_CAM1_SYNC;
-		clr_CAM1_TRIG;
-
-		timer_type0_stop(&TCD0);
+    	stop_cam1 = true;
 	}
 }
 

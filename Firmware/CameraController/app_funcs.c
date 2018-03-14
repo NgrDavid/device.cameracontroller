@@ -2,6 +2,9 @@
 #include "app_ios_and_regs.h"
 #include "hwbp_core.h"
 
+#define F_CPU 32000000
+#include <util/delay.h>
+
 
 /************************************************************************/
 /* Create pointers to functions                                         */
@@ -87,12 +90,18 @@ bool app_write_REG_START_CAMS(void *a)
 {
 	if (*((uint8_t*)a) & B_START_CAM0)
 	{
+        clr_CAM0_TRIG;
+        _delay_us(16);      // Measured, gives around 55us before the the first trigger pulse
+                
 		start_camera0();
 		app_regs.REG_CAM0_MODE = GM_CAM0_MODE_CAM;
 	}
 
 	if (*((uint8_t*)a) & B_START_CAM1)
 	{
+        clr_CAM1_TRIG;
+        _delay_us(16);      // Measured, gives around 55us before the the first trigger pulse
+
 		start_camera1();
 		app_regs.REG_CAM1_MODE = GM_CAM1_MODE_CAM;
 	}
