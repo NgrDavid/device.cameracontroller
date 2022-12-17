@@ -1,6 +1,6 @@
 ## Harp Camera Controller ##
 
-This is a multiplexer device that allows an analog input signal to be forwarded to several output channels. It allows to forward an audio signal to a single speaker or a combination of speakers. The configuration of speakers can be predefined by software or by using a set of digital inputs.
+This device allows to trigger up to 2 cameras at a predefined frequency pulse or 2 servo motors. Connect cameras to CAM0 TRIG and CAM1 TRIG ports.
 
 ![HarpCameraController](Pics/cameracontroller.png)
 
