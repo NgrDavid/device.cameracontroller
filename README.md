@@ -2,7 +2,7 @@
 
 This device allows to trigger up to 2 cameras at a predefined frequency pulse or 2 servo motors. Connect cameras to CAM0 TRIG and CAM1 TRIG ports.
 
-![harpcameratriggercontrol](./docs/assets/pcb.png)
+![harpcameratriggercontrol](./Assets/pcb.png)
 
 ### Key Features ###
 
