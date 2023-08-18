@@ -35,11 +35,11 @@ registers:
   OutputClear:
     <<: *output
     address: 37
-    description: Clear the specified digital output lines
+    description: Clear the specified digital output lines.
   OutputState:
     <<: *output
     address: 38
-    description: Write the state of all digital output lines
+    description: Write the state of all digital output lines.
   DigitalInputs:
     address: 39
     type: U8
