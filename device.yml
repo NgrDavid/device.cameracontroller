@@ -35,11 +35,11 @@ registers:
   OutputClear:
     <<: *output
     address: 37
-    description: Clear the specified digital output lines.
+    description: Clear the specified digital output lines
   OutputState:
     <<: *output
     address: 38
-    description: Write the state of all digital output lines.
+    description: Write the state of all digital output lines
   DigitalInputs:
     address: 39
     type: U8
@@ -149,10 +149,10 @@ bitMasks:
       Camera0: 0x1
       Camera1: 0x2
   Servos:
-      description: Specifies the target servo-motor lines.
-      bits:
-        Servo0: 0x1
-        Servo1: 0x2
+    description: Specifies the target servo-motor lines.
+    bits:
+      Servo0: 0x1
+      Servo1: 0x2
   DigitalOutputs:
     description: Available digital output lines.
     bits:
@@ -168,20 +168,20 @@ bitMasks:
     description: Specifies the active events in the device.
     bits:
       TriggerAndSynch: {0x1, description: Enables CameraTrigger and CameraSync events.}
-      DigitalInputs: {0x2, description: Enables DigitalInputs events.}
+      DigitalInputs: {0x2, description: Enables DigitalInputs}
 groupMasks:
   DI0ModeConfig:
     description: Specifies the operation mode of digital input line 0.
     values:
-      HighEnablesCamera0: {0, description: When High, enables Camera0 or Servo0.}
-      HighEnablesCamera1: {1, description: When High, enables Camera1 or Servo1.}
-      HighEnablesCameraBoth: {2, description: When High, enables both Cameras or Servos.}
-      LowEnablesCamera0: {3, description: When Low, enables Camera0 or Servo0.}
-      LowEnablesCamera1: {4, description: When Low, enables Camera1 or Servo1.}
-      LowEnablesCameraBoth: {5, description: When Low, enables both Cameras or Servos.}
-      Default: {6, description: The line will function as a passive digital input.}
+      HighEnablesCamera0: {0, description: "When High, enables Camera0 or Servo0."}
+      HighEnablesCamera1: {1, description: "When High, enables Camera1 or Servo1."}
+      HighEnablesCameraBoth: {2, description: "When High, enables both Cameras or Servos."}
+      LowEnablesCamera0: {3, description: "When Low, enables Camera0 or Servo0."}
+      LowEnablesCamera1: {4, description: "When Low, enables Camera1 or Servo1."}
+      LowEnablesCameraBoth: {5, description: "When Low, enables both Cameras or Servos."}
+      Default: {6, description: "The line will function as a passive digital input."}
   ControlModeConfig:
     description: Specifies the operation mode of a specific output line.
     values:
       Camera: {0, description: Enables Camera mode and it will produce the configured trigger.}
-      Servo: {0, description: Enables Camera mode and it will produce the configured trigger.}
+      Servo: {1, description: Enables Camera mode and it will produce the configured trigger.}
