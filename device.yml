@@ -102,7 +102,7 @@ registers:
     minValue: 1
     type: U16
     access: Write
-    description: Configures the frequency of the trigger pulses on Camera 0 when using Camera mode.
+    description: Configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.
   Servo0Period: &servoperiod
     address: 51
     type: U16
@@ -120,7 +120,7 @@ registers:
   Camera1Frequency:
     <<: *camerafrequency
     address: 54
-    description: Configures the frequency of the trigger pulses on Camera 1 when using Camera mode.
+    description: Configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.
   Servo1Period:
     <<: *servoperiod
     address: 55
@@ -184,4 +184,4 @@ groupMasks:
     description: Specifies the operation mode of a specific output line.
     values:
       Camera: {0, description: Enables Camera mode and it will produce the configured trigger.}
-      Servo: {1, description: Enables Camera mode and it will produce the configured trigger.}
+      Servo: {1, description: Enables Servo mode and it will produce the configured trigger.}
