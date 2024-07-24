@@ -44,7 +44,7 @@ namespace Harp.CameraController
             { 36, typeof(OutputSet) },
             { 37, typeof(OutputClear) },
             { 38, typeof(OutputState) },
-            { 39, typeof(DigitalInputs) },
+            { 39, typeof(DigitalInputState) },
             { 40, typeof(Camera0Trigger) },
             { 41, typeof(Camera1Trigger) },
             { 42, typeof(Camera0Sync) },
@@ -96,7 +96,7 @@ namespace Harp.CameraController
     /// <seealso cref="OutputSet"/>
     /// <seealso cref="OutputClear"/>
     /// <seealso cref="OutputState"/>
-    /// <seealso cref="DigitalInputs"/>
+    /// <seealso cref="DigitalInputState"/>
     /// <seealso cref="Camera0Trigger"/>
     /// <seealso cref="Camera1Trigger"/>
     /// <seealso cref="Camera0Sync"/>
@@ -120,7 +120,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(OutputSet))]
     [XmlInclude(typeof(OutputClear))]
     [XmlInclude(typeof(OutputState))]
-    [XmlInclude(typeof(DigitalInputs))]
+    [XmlInclude(typeof(DigitalInputState))]
     [XmlInclude(typeof(Camera0Trigger))]
     [XmlInclude(typeof(Camera1Trigger))]
     [XmlInclude(typeof(Camera0Sync))]
@@ -165,7 +165,7 @@ namespace Harp.CameraController
     /// <seealso cref="OutputSet"/>
     /// <seealso cref="OutputClear"/>
     /// <seealso cref="OutputState"/>
-    /// <seealso cref="DigitalInputs"/>
+    /// <seealso cref="DigitalInputState"/>
     /// <seealso cref="Camera0Trigger"/>
     /// <seealso cref="Camera1Trigger"/>
     /// <seealso cref="Camera0Sync"/>
@@ -189,7 +189,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(OutputSet))]
     [XmlInclude(typeof(OutputClear))]
     [XmlInclude(typeof(OutputState))]
-    [XmlInclude(typeof(DigitalInputs))]
+    [XmlInclude(typeof(DigitalInputState))]
     [XmlInclude(typeof(Camera0Trigger))]
     [XmlInclude(typeof(Camera1Trigger))]
     [XmlInclude(typeof(Camera0Sync))]
@@ -213,7 +213,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(TimestampedOutputSet))]
     [XmlInclude(typeof(TimestampedOutputClear))]
     [XmlInclude(typeof(TimestampedOutputState))]
-    [XmlInclude(typeof(TimestampedDigitalInputs))]
+    [XmlInclude(typeof(TimestampedDigitalInputState))]
     [XmlInclude(typeof(TimestampedCamera0Trigger))]
     [XmlInclude(typeof(TimestampedCamera1Trigger))]
     [XmlInclude(typeof(TimestampedCamera0Sync))]
@@ -255,7 +255,7 @@ namespace Harp.CameraController
     /// <seealso cref="OutputSet"/>
     /// <seealso cref="OutputClear"/>
     /// <seealso cref="OutputState"/>
-    /// <seealso cref="DigitalInputs"/>
+    /// <seealso cref="DigitalInputState"/>
     /// <seealso cref="Camera0Trigger"/>
     /// <seealso cref="Camera1Trigger"/>
     /// <seealso cref="Camera0Sync"/>
@@ -279,7 +279,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(OutputSet))]
     [XmlInclude(typeof(OutputClear))]
     [XmlInclude(typeof(OutputState))]
-    [XmlInclude(typeof(DigitalInputs))]
+    [XmlInclude(typeof(DigitalInputState))]
     [XmlInclude(typeof(Camera0Trigger))]
     [XmlInclude(typeof(Camera1Trigger))]
     [XmlInclude(typeof(Camera0Sync))]
@@ -993,25 +993,25 @@ namespace Harp.CameraController
     /// Represents a register that emits an event when the state of the digital input line changes.
     /// </summary>
     [Description("Emits an event when the state of the digital input line changes.")]
-    public partial class DigitalInputs
+    public partial class DigitalInputState
     {
         /// <summary>
-        /// Represents the address of the <see cref="DigitalInputs"/> register. This field is constant.
+        /// Represents the address of the <see cref="DigitalInputState"/> register. This field is constant.
         /// </summary>
         public const int Address = 39;
 
         /// <summary>
-        /// Represents the payload type of the <see cref="DigitalInputs"/> register. This field is constant.
+        /// Represents the payload type of the <see cref="DigitalInputState"/> register. This field is constant.
         /// </summary>
         public const PayloadType RegisterType = PayloadType.U8;
 
         /// <summary>
-        /// Represents the length of the <see cref="DigitalInputs"/> register. This field is constant.
+        /// Represents the length of the <see cref="DigitalInputState"/> register. This field is constant.
         /// </summary>
         public const int RegisterLength = 1;
 
         /// <summary>
-        /// Returns the payload data for <see cref="DigitalInputs"/> register messages.
+        /// Returns the payload data for <see cref="DigitalInputState"/> register messages.
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
@@ -1021,7 +1021,7 @@ namespace Harp.CameraController
         }
 
         /// <summary>
-        /// Returns the timestamped payload data for <see cref="DigitalInputs"/> register messages.
+        /// Returns the timestamped payload data for <see cref="DigitalInputState"/> register messages.
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
@@ -1032,12 +1032,12 @@ namespace Harp.CameraController
         }
 
         /// <summary>
-        /// Returns a Harp message for the <see cref="DigitalInputs"/> register.
+        /// Returns a Harp message for the <see cref="DigitalInputState"/> register.
         /// </summary>
         /// <param name="messageType">The type of the Harp message.</param>
         /// <param name="value">The value to be stored in the message payload.</param>
         /// <returns>
-        /// A <see cref="HarpMessage"/> object for the <see cref="DigitalInputs"/> register
+        /// A <see cref="HarpMessage"/> object for the <see cref="DigitalInputState"/> register
         /// with the specified message type and payload.
         /// </returns>
         public static HarpMessage FromPayload(MessageType messageType, DigitalInputs value)
@@ -1046,14 +1046,14 @@ namespace Harp.CameraController
         }
 
         /// <summary>
-        /// Returns a timestamped Harp message for the <see cref="DigitalInputs"/>
+        /// Returns a timestamped Harp message for the <see cref="DigitalInputState"/>
         /// register.
         /// </summary>
         /// <param name="timestamp">The timestamp of the message payload, in seconds.</param>
         /// <param name="messageType">The type of the Harp message.</param>
         /// <param name="value">The value to be stored in the message payload.</param>
         /// <returns>
-        /// A <see cref="HarpMessage"/> object for the <see cref="DigitalInputs"/> register
+        /// A <see cref="HarpMessage"/> object for the <see cref="DigitalInputState"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
         public static HarpMessage FromPayload(double timestamp, MessageType messageType, DigitalInputs value)
@@ -1064,25 +1064,25 @@ namespace Harp.CameraController
 
     /// <summary>
     /// Provides methods for manipulating timestamped messages from the
-    /// DigitalInputs register.
+    /// DigitalInputState register.
     /// </summary>
-    /// <seealso cref="DigitalInputs"/>
-    [Description("Filters and selects timestamped messages from the DigitalInputs register.")]
-    public partial class TimestampedDigitalInputs
+    /// <seealso cref="DigitalInputState"/>
+    [Description("Filters and selects timestamped messages from the DigitalInputState register.")]
+    public partial class TimestampedDigitalInputState
     {
         /// <summary>
-        /// Represents the address of the <see cref="DigitalInputs"/> register. This field is constant.
+        /// Represents the address of the <see cref="DigitalInputState"/> register. This field is constant.
         /// </summary>
-        public const int Address = DigitalInputs.Address;
+        public const int Address = DigitalInputState.Address;
 
         /// <summary>
-        /// Returns timestamped payload data for <see cref="DigitalInputs"/> register messages.
+        /// Returns timestamped payload data for <see cref="DigitalInputState"/> register messages.
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
         public static Timestamped<DigitalInputs> GetPayload(HarpMessage message)
         {
-            return DigitalInputs.GetTimestampedPayload(message);
+            return DigitalInputState.GetTimestampedPayload(message);
         }
     }
 
@@ -1858,9 +1858,9 @@ namespace Harp.CameraController
     }
 
     /// <summary>
-    /// Represents a register that configures the frequency of the trigger pulses on Camera 0 when using Camera mode.
+    /// Represents a register that configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.
     /// </summary>
-    [Description("Configures the frequency of the trigger pulses on Camera 0 when using Camera mode.")]
+    [Description("Configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.")]
     public partial class Camera0Frequency
     {
         /// <summary>
@@ -2243,9 +2243,9 @@ namespace Harp.CameraController
     }
 
     /// <summary>
-    /// Represents a register that configures the frequency of the trigger pulses on Camera 1 when using Camera mode.
+    /// Represents a register that configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.
     /// </summary>
-    [Description("Configures the frequency of the trigger pulses on Camera 1 when using Camera mode.")]
+    [Description("Configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.")]
     public partial class Camera1Frequency
     {
         /// <summary>
@@ -2638,7 +2638,7 @@ namespace Harp.CameraController
     /// <seealso cref="CreateOutputSetPayload"/>
     /// <seealso cref="CreateOutputClearPayload"/>
     /// <seealso cref="CreateOutputStatePayload"/>
-    /// <seealso cref="CreateDigitalInputsPayload"/>
+    /// <seealso cref="CreateDigitalInputStatePayload"/>
     /// <seealso cref="CreateCamera0TriggerPayload"/>
     /// <seealso cref="CreateCamera1TriggerPayload"/>
     /// <seealso cref="CreateCamera0SyncPayload"/>
@@ -2662,7 +2662,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(CreateOutputSetPayload))]
     [XmlInclude(typeof(CreateOutputClearPayload))]
     [XmlInclude(typeof(CreateOutputStatePayload))]
-    [XmlInclude(typeof(CreateDigitalInputsPayload))]
+    [XmlInclude(typeof(CreateDigitalInputStatePayload))]
     [XmlInclude(typeof(CreateCamera0TriggerPayload))]
     [XmlInclude(typeof(CreateCamera1TriggerPayload))]
     [XmlInclude(typeof(CreateCamera0SyncPayload))]
@@ -2686,7 +2686,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(CreateTimestampedOutputSetPayload))]
     [XmlInclude(typeof(CreateTimestampedOutputClearPayload))]
     [XmlInclude(typeof(CreateTimestampedOutputStatePayload))]
-    [XmlInclude(typeof(CreateTimestampedDigitalInputsPayload))]
+    [XmlInclude(typeof(CreateTimestampedDigitalInputStatePayload))]
     [XmlInclude(typeof(CreateTimestampedCamera0TriggerPayload))]
     [XmlInclude(typeof(CreateTimestampedCamera1TriggerPayload))]
     [XmlInclude(typeof(CreateTimestampedCamera0SyncPayload))]
@@ -3099,33 +3099,33 @@ namespace Harp.CameraController
     /// Represents an operator that creates a message payload
     /// that emits an event when the state of the digital input line changes.
     /// </summary>
-    [DisplayName("DigitalInputsPayload")]
+    [DisplayName("DigitalInputStatePayload")]
     [Description("Creates a message payload that emits an event when the state of the digital input line changes.")]
-    public partial class CreateDigitalInputsPayload
+    public partial class CreateDigitalInputStatePayload
     {
         /// <summary>
         /// Gets or sets the value that emits an event when the state of the digital input line changes.
         /// </summary>
         [Description("The value that emits an event when the state of the digital input line changes.")]
-        public DigitalInputs DigitalInputs { get; set; }
+        public DigitalInputs DigitalInputState { get; set; }
 
         /// <summary>
-        /// Creates a message payload for the DigitalInputs register.
+        /// Creates a message payload for the DigitalInputState register.
         /// </summary>
         /// <returns>The created message payload value.</returns>
         public DigitalInputs GetPayload()
         {
-            return DigitalInputs;
+            return DigitalInputState;
         }
 
         /// <summary>
         /// Creates a message that emits an event when the state of the digital input line changes.
         /// </summary>
         /// <param name="messageType">Specifies the type of the created message.</param>
-        /// <returns>A new message for the DigitalInputs register.</returns>
+        /// <returns>A new message for the DigitalInputState register.</returns>
         public HarpMessage GetMessage(MessageType messageType)
         {
-            return Harp.CameraController.DigitalInputs.FromPayload(messageType, GetPayload());
+            return Harp.CameraController.DigitalInputState.FromPayload(messageType, GetPayload());
         }
     }
 
@@ -3133,19 +3133,19 @@ namespace Harp.CameraController
     /// Represents an operator that creates a timestamped message payload
     /// that emits an event when the state of the digital input line changes.
     /// </summary>
-    [DisplayName("TimestampedDigitalInputsPayload")]
+    [DisplayName("TimestampedDigitalInputStatePayload")]
     [Description("Creates a timestamped message payload that emits an event when the state of the digital input line changes.")]
-    public partial class CreateTimestampedDigitalInputsPayload : CreateDigitalInputsPayload
+    public partial class CreateTimestampedDigitalInputStatePayload : CreateDigitalInputStatePayload
     {
         /// <summary>
         /// Creates a timestamped message that emits an event when the state of the digital input line changes.
         /// </summary>
         /// <param name="timestamp">The timestamp of the message payload, in seconds.</param>
         /// <param name="messageType">Specifies the type of the created message.</param>
-        /// <returns>A new timestamped message for the DigitalInputs register.</returns>
+        /// <returns>A new timestamped message for the DigitalInputState register.</returns>
         public HarpMessage GetMessage(double timestamp, MessageType messageType)
         {
-            return Harp.CameraController.DigitalInputs.FromPayload(timestamp, messageType, GetPayload());
+            return Harp.CameraController.DigitalInputState.FromPayload(timestamp, messageType, GetPayload());
         }
     }
 
@@ -3583,18 +3583,18 @@ namespace Harp.CameraController
 
     /// <summary>
     /// Represents an operator that creates a message payload
-    /// that configures the frequency of the trigger pulses on Camera 0 when using Camera mode.
+    /// that configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.
     /// </summary>
     [DisplayName("Camera0FrequencyPayload")]
-    [Description("Creates a message payload that configures the frequency of the trigger pulses on Camera 0 when using Camera mode.")]
+    [Description("Creates a message payload that configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.")]
     public partial class CreateCamera0FrequencyPayload
     {
         /// <summary>
-        /// Gets or sets the value that configures the frequency of the trigger pulses on Camera 0 when using Camera mode.
+        /// Gets or sets the value that configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.
         /// </summary>
         [Range(min: 1, max: 600)]
         [Editor(DesignTypes.NumericUpDownEditor, DesignTypes.UITypeEditor)]
-        [Description("The value that configures the frequency of the trigger pulses on Camera 0 when using Camera mode.")]
+        [Description("The value that configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.")]
         public ushort Camera0Frequency { get; set; } = 1;
 
         /// <summary>
@@ -3607,7 +3607,7 @@ namespace Harp.CameraController
         }
 
         /// <summary>
-        /// Creates a message that configures the frequency of the trigger pulses on Camera 0 when using Camera mode.
+        /// Creates a message that configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.
         /// </summary>
         /// <param name="messageType">Specifies the type of the created message.</param>
         /// <returns>A new message for the Camera0Frequency register.</returns>
@@ -3619,14 +3619,14 @@ namespace Harp.CameraController
 
     /// <summary>
     /// Represents an operator that creates a timestamped message payload
-    /// that configures the frequency of the trigger pulses on Camera 0 when using Camera mode.
+    /// that configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.
     /// </summary>
     [DisplayName("TimestampedCamera0FrequencyPayload")]
-    [Description("Creates a timestamped message payload that configures the frequency of the trigger pulses on Camera 0 when using Camera mode.")]
+    [Description("Creates a timestamped message payload that configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.")]
     public partial class CreateTimestampedCamera0FrequencyPayload : CreateCamera0FrequencyPayload
     {
         /// <summary>
-        /// Creates a timestamped message that configures the frequency of the trigger pulses on Camera 0 when using Camera mode.
+        /// Creates a timestamped message that configures the frequency (Hz) of the trigger pulses on Camera 0 when using Camera mode.
         /// </summary>
         /// <param name="timestamp">The timestamp of the message payload, in seconds.</param>
         /// <param name="messageType">Specifies the type of the created message.</param>
@@ -3801,18 +3801,18 @@ namespace Harp.CameraController
 
     /// <summary>
     /// Represents an operator that creates a message payload
-    /// that configures the frequency of the trigger pulses on Camera 1 when using Camera mode.
+    /// that configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.
     /// </summary>
     [DisplayName("Camera1FrequencyPayload")]
-    [Description("Creates a message payload that configures the frequency of the trigger pulses on Camera 1 when using Camera mode.")]
+    [Description("Creates a message payload that configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.")]
     public partial class CreateCamera1FrequencyPayload
     {
         /// <summary>
-        /// Gets or sets the value that configures the frequency of the trigger pulses on Camera 1 when using Camera mode.
+        /// Gets or sets the value that configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.
         /// </summary>
         [Range(min: 1, max: 600)]
         [Editor(DesignTypes.NumericUpDownEditor, DesignTypes.UITypeEditor)]
-        [Description("The value that configures the frequency of the trigger pulses on Camera 1 when using Camera mode.")]
+        [Description("The value that configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.")]
         public ushort Camera1Frequency { get; set; } = 1;
 
         /// <summary>
@@ -3825,7 +3825,7 @@ namespace Harp.CameraController
         }
 
         /// <summary>
-        /// Creates a message that configures the frequency of the trigger pulses on Camera 1 when using Camera mode.
+        /// Creates a message that configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.
         /// </summary>
         /// <param name="messageType">Specifies the type of the created message.</param>
         /// <returns>A new message for the Camera1Frequency register.</returns>
@@ -3837,14 +3837,14 @@ namespace Harp.CameraController
 
     /// <summary>
     /// Represents an operator that creates a timestamped message payload
-    /// that configures the frequency of the trigger pulses on Camera 1 when using Camera mode.
+    /// that configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.
     /// </summary>
     [DisplayName("TimestampedCamera1FrequencyPayload")]
-    [Description("Creates a timestamped message payload that configures the frequency of the trigger pulses on Camera 1 when using Camera mode.")]
+    [Description("Creates a timestamped message payload that configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.")]
     public partial class CreateTimestampedCamera1FrequencyPayload : CreateCamera1FrequencyPayload
     {
         /// <summary>
-        /// Creates a timestamped message that configures the frequency of the trigger pulses on Camera 1 when using Camera mode.
+        /// Creates a timestamped message that configures the frequency (Hz) of the trigger pulses on Camera 1 when using Camera mode.
         /// </summary>
         /// <param name="timestamp">The timestamp of the message payload, in seconds.</param>
         /// <param name="messageType">Specifies the type of the created message.</param>
@@ -4069,19 +4069,14 @@ namespace Harp.CameraController
     public enum CameraControllerEvents : byte
     {
         /// <summary>
-        /// Specifies that no flags are defined.
-        /// </summary>
-        None = 0x0,
-
-        /// <summary>
         /// Enables CameraTrigger and CameraSync events.
         /// </summary>
-        TriggerAndSynch = 0x1,
+        TriggerAndSynch = 0x0,
 
         /// <summary>
         /// Enables DigitalInputs
         /// </summary>
-        DigitalInputs = 0x2
+        DigitalInputs = 0x0
     }
 
     /// <summary>
@@ -4097,32 +4092,32 @@ namespace Harp.CameraController
         /// <summary>
         /// When High, enables Camera1 or Servo1.
         /// </summary>
-        HighEnablesCamera1 = 1,
+        HighEnablesCamera1 = 0,
 
         /// <summary>
         /// When High, enables both Cameras or Servos.
         /// </summary>
-        HighEnablesCameraBoth = 2,
+        HighEnablesCameraBoth = 0,
 
         /// <summary>
         /// When Low, enables Camera0 or Servo0.
         /// </summary>
-        LowEnablesCamera0 = 3,
+        LowEnablesCamera0 = 0,
 
         /// <summary>
         /// When Low, enables Camera1 or Servo1.
         /// </summary>
-        LowEnablesCamera1 = 4,
+        LowEnablesCamera1 = 0,
 
         /// <summary>
         /// When Low, enables both Cameras or Servos.
         /// </summary>
-        LowEnablesCameraBoth = 5,
+        LowEnablesCameraBoth = 0,
 
         /// <summary>
         /// The line will function as a passive digital input.
         /// </summary>
-        Default = 6
+        Default = 0
     }
 
     /// <summary>
@@ -4136,8 +4131,8 @@ namespace Harp.CameraController
         Camera = 0,
 
         /// <summary>
-        /// Enables Camera mode and it will produce the configured trigger.
+        /// Enables Servo mode and it will produce the configured trigger.
         /// </summary>
-        Servo = 1
+        Servo = 0
     }
 }
