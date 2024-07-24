@@ -368,7 +368,7 @@ namespace Harp.CameraController
         }
 
         /// <summary>
-        /// Asynchronously reads the contents of the DigitalInputs register.
+        /// Asynchronously reads the contents of the DigitalInputState register.
         /// </summary>
         /// <param name="cancellationToken">
         /// A <see cref="CancellationToken"/> which can be used to cancel the operation.
@@ -377,14 +377,14 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<DigitalInputs> ReadDigitalInputsAsync(CancellationToken cancellationToken = default)
+        public async Task<DigitalInputs> ReadDigitalInputStateAsync(CancellationToken cancellationToken = default)
         {
-            var reply = await CommandAsync(HarpCommand.ReadByte(DigitalInputs.Address), cancellationToken);
-            return DigitalInputs.GetPayload(reply);
+            var reply = await CommandAsync(HarpCommand.ReadByte(DigitalInputState.Address), cancellationToken);
+            return DigitalInputState.GetPayload(reply);
         }
 
         /// <summary>
-        /// Asynchronously reads the timestamped contents of the DigitalInputs register.
+        /// Asynchronously reads the timestamped contents of the DigitalInputState register.
         /// </summary>
         /// <param name="cancellationToken">
         /// A <see cref="CancellationToken"/> which can be used to cancel the operation.
@@ -393,10 +393,10 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<DigitalInputs>> ReadTimestampedDigitalInputsAsync(CancellationToken cancellationToken = default)
+        public async Task<Timestamped<DigitalInputs>> ReadTimestampedDigitalInputStateAsync(CancellationToken cancellationToken = default)
         {
-            var reply = await CommandAsync(HarpCommand.ReadByte(DigitalInputs.Address), cancellationToken);
-            return DigitalInputs.GetTimestampedPayload(reply);
+            var reply = await CommandAsync(HarpCommand.ReadByte(DigitalInputState.Address), cancellationToken);
+            return DigitalInputState.GetTimestampedPayload(reply);
         }
 
         /// <summary>
