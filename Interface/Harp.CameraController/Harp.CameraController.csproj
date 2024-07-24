@@ -10,14 +10,14 @@
     <Description>Bonsai Library containing interfaces for data acquisition and control of Harp CameraController devices.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>Harp CameraController Bonsai Rx</PackageTags>
-	<PackageProjectUrl>https://harp-tech.org</PackageProjectUrl>
+    <PackageProjectUrl>https://harp-tech.org</PackageProjectUrl>
     <RepositoryUrl>https://github.com/harp-tech/device.cameracontroller.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageOutputPath>..\bin\$(Configuration)</PackageOutputPath>
     <TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <VersionPrefix>0.1.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <LangVersion>9.0</LangVersion>
@@ -26,7 +26,7 @@
   <ItemGroup>
     <PackageReference Include="Bonsai.Harp" Version="3.5.0" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Content Include="..\LICENSE" PackagePath="/" />
     <Content Include="..\icon.png" PackagePath="/" />
