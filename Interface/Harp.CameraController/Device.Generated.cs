@@ -50,7 +50,9 @@ namespace Harp.CameraController
             { 42, typeof(Camera0Sync) },
             { 43, typeof(Camera1Sync) },
             { 44, typeof(ServoState) },
+            { 45, typeof(Reserved0) },
             { 46, typeof(SyncInterval) },
+            { 47, typeof(Reserved1) },
             { 48, typeof(DI0Mode) },
             { 49, typeof(Control0Mode) },
             { 50, typeof(Camera0Frequency) },
@@ -60,8 +62,45 @@ namespace Harp.CameraController
             { 54, typeof(Camera1Frequency) },
             { 55, typeof(Servo1Period) },
             { 56, typeof(Servo1PulseWidth) },
+            { 57, typeof(Reserved2) },
+            { 58, typeof(Reserved3) },
             { 59, typeof(EnableEvents) }
         };
+
+        /// <summary>
+        /// Gets the contents of the metadata file describing the <see cref="CameraController"/>
+        /// device registers.
+        /// </summary>
+        public static readonly string Metadata = GetDeviceMetadata();
+
+        static string GetDeviceMetadata()
+        {
+            var deviceType = typeof(Device);
+            using var metadataStream = deviceType.Assembly.GetManifestResourceStream($"{deviceType.Namespace}.device.yml");
+            using var streamReader = new System.IO.StreamReader(metadataStream);
+            return streamReader.ReadToEnd();
+        }
+    }
+
+    /// <summary>
+    /// Represents an operator that returns the contents of the metadata file
+    /// describing the <see cref="CameraController"/> device registers.
+    /// </summary>
+    [Description("Returns the contents of the metadata file describing the CameraController device registers.")]
+    public partial class GetMetadata : Source<string>
+    {
+        /// <summary>
+        /// Returns an observable sequence with the contents of the metadata file
+        /// describing the <see cref="CameraController"/> device registers.
+        /// </summary>
+        /// <returns>
+        /// A sequence with a single <see cref="string"/> object representing the
+        /// contents of the metadata file.
+        /// </returns>
+        public override IObservable<string> Generate()
+        {
+            return Observable.Return(Device.Metadata);
+        }
     }
 
     /// <summary>
@@ -1568,6 +1607,28 @@ namespace Harp.CameraController
     }
 
     /// <summary>
+    /// Represents a register that reserved for future use.
+    /// </summary>
+    [Description("Reserved for future use.")]
+    internal partial class Reserved0
+    {
+        /// <summary>
+        /// Represents the address of the <see cref="Reserved0"/> register. This field is constant.
+        /// </summary>
+        public const int Address = 45;
+
+        /// <summary>
+        /// Represents the payload type of the <see cref="Reserved0"/> register. This field is constant.
+        /// </summary>
+        public const PayloadType RegisterType = PayloadType.U8;
+
+        /// <summary>
+        /// Represents the length of the <see cref="Reserved0"/> register. This field is constant.
+        /// </summary>
+        public const int RegisterLength = 1;
+    }
+
+    /// <summary>
     /// Represents a register that configures the interval in seconds between each sync pulse.
     /// </summary>
     [Description("Configures the interval in seconds between each sync pulse")]
@@ -1661,6 +1722,28 @@ namespace Harp.CameraController
         {
             return SyncInterval.GetTimestampedPayload(message);
         }
+    }
+
+    /// <summary>
+    /// Represents a register that reserved for future use.
+    /// </summary>
+    [Description("Reserved for future use.")]
+    internal partial class Reserved1
+    {
+        /// <summary>
+        /// Represents the address of the <see cref="Reserved1"/> register. This field is constant.
+        /// </summary>
+        public const int Address = 47;
+
+        /// <summary>
+        /// Represents the payload type of the <see cref="Reserved1"/> register. This field is constant.
+        /// </summary>
+        public const PayloadType RegisterType = PayloadType.U8;
+
+        /// <summary>
+        /// Represents the length of the <see cref="Reserved1"/> register. This field is constant.
+        /// </summary>
+        public const int RegisterLength = 1;
     }
 
     /// <summary>
@@ -2528,6 +2611,50 @@ namespace Harp.CameraController
         {
             return Servo1PulseWidth.GetTimestampedPayload(message);
         }
+    }
+
+    /// <summary>
+    /// Represents a register that reserved for future use.
+    /// </summary>
+    [Description("Reserved for future use.")]
+    internal partial class Reserved2
+    {
+        /// <summary>
+        /// Represents the address of the <see cref="Reserved2"/> register. This field is constant.
+        /// </summary>
+        public const int Address = 57;
+
+        /// <summary>
+        /// Represents the payload type of the <see cref="Reserved2"/> register. This field is constant.
+        /// </summary>
+        public const PayloadType RegisterType = PayloadType.U8;
+
+        /// <summary>
+        /// Represents the length of the <see cref="Reserved2"/> register. This field is constant.
+        /// </summary>
+        public const int RegisterLength = 1;
+    }
+
+    /// <summary>
+    /// Represents a register that reserved for future use.
+    /// </summary>
+    [Description("Reserved for future use.")]
+    internal partial class Reserved3
+    {
+        /// <summary>
+        /// Represents the address of the <see cref="Reserved3"/> register. This field is constant.
+        /// </summary>
+        public const int Address = 58;
+
+        /// <summary>
+        /// Represents the payload type of the <see cref="Reserved3"/> register. This field is constant.
+        /// </summary>
+        public const PayloadType RegisterType = PayloadType.U8;
+
+        /// <summary>
+        /// Represents the length of the <see cref="Reserved3"/> register. This field is constant.
+        /// </summary>
+        public const int RegisterLength = 1;
     }
 
     /// <summary>
@@ -4069,14 +4196,19 @@ namespace Harp.CameraController
     public enum CameraControllerEvents : byte
     {
         /// <summary>
+        /// Specifies that no flags are defined.
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
         /// Enables CameraTrigger and CameraSync events.
         /// </summary>
-        TriggerAndSynch = 0x0,
+        TriggerAndSynch = 0x1,
 
         /// <summary>
         /// Enables DigitalInputs
         /// </summary>
-        DigitalInputs = 0x0
+        DigitalInputs = 0x2
     }
 
     /// <summary>
@@ -4092,32 +4224,32 @@ namespace Harp.CameraController
         /// <summary>
         /// When High, enables Camera1 or Servo1.
         /// </summary>
-        HighEnablesCamera1 = 0,
+        HighEnablesCamera1 = 1,
 
         /// <summary>
         /// When High, enables both Cameras or Servos.
         /// </summary>
-        HighEnablesCameraBoth = 0,
+        HighEnablesCameraBoth = 2,
 
         /// <summary>
         /// When Low, enables Camera0 or Servo0.
         /// </summary>
-        LowEnablesCamera0 = 0,
+        LowEnablesCamera0 = 3,
 
         /// <summary>
         /// When Low, enables Camera1 or Servo1.
         /// </summary>
-        LowEnablesCamera1 = 0,
+        LowEnablesCamera1 = 4,
 
         /// <summary>
         /// When Low, enables both Cameras or Servos.
         /// </summary>
-        LowEnablesCameraBoth = 0,
+        LowEnablesCameraBoth = 5,
 
         /// <summary>
         /// The line will function as a passive digital input.
         /// </summary>
-        Default = 0
+        Default = 6
     }
 
     /// <summary>
@@ -4133,6 +4265,6 @@ namespace Harp.CameraController
         /// <summary>
         /// Enables Servo mode and it will produce the configured trigger.
         /// </summary>
-        Servo = 0
+        Servo = 1
     }
 }
